@@ -26,7 +26,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.authService.authenticationState.subscribe(state => {
+      this.authService.authSubject.subscribe(state => {
         if (state) {
           this.router.navigate(['members', 'dashboard']);
         } else {
