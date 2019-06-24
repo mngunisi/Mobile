@@ -1,9 +1,9 @@
-export interface AuthResponse {
-    user: {
-        id: number,
-        name: string,
-        phoneNumber: string,
-        access_token: string,
-        expires_in: number
-    }
+export interface UserDTO {
+    name: string,
+    surname: string,
+    username: string,
+    fieldName: string,
+    errorMsg: string,
+    accessToken: string,
+    expiresIn: number
 }

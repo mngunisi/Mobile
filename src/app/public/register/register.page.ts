@@ -3,6 +3,7 @@ import {AuthService} from "../../services/auth.service";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Router} from "@angular/router";
 import {MustMatch} from "../../validators/must-match";
+import {UserDTO} from "../../auth/auth-response";
 
 
 @Component({
@@ -13,6 +14,7 @@ import {MustMatch} from "../../validators/must-match";
 export class RegisterPage implements OnInit {
     registerForm: FormGroup;
     submitted = false;
+    user: UserDTO;
 
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
@@ -39,6 +41,11 @@ export class RegisterPage implements OnInit {
       }
 
     this.authService.register(this.registerForm.value).subscribe((res) => {
+          this.user = res;
+          if (this.user.errorMsg != null) {
+              alert(this.user.fieldName);
+              return;
+          }
       this.router.navigateByUrl('home');
     });
   }
