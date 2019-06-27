@@ -1,25 +1,27 @@
-import { Platform } from '@ionic/angular';
-import { Injectable } from '@angular/core';
-import { HttpClient } from  '@angular/common/http';
-import { tap } from  'rxjs/operators';
-import { Storage } from '@ionic/storage';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { User } from  './user';
-import { AuthResponse } from  './auth-response';
+import {Platform} from "@ionic/angular";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {Storage} from "@ionic/storage";
+import {BehaviorSubject, Observable} from "rxjs";
+import {AuthResponse} from "../auth/auth-response";
+import {User} from "../auth/user";
+import {tap} from "rxjs/internal/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-    AUTH_SERVER_ADDRESS:  string  =  'http://localhost:3000';
+    AUTH_SERVER_ADDRESS:  string  =  'http://localhost:8080//';
     authSubject  =  new  BehaviorSubject(false);
 
   constructor(private storage: Storage, private  httpClient:  HttpClient, private platform: Platform) {
   }
 
     register(user: User): Observable<AuthResponse> {
-        return this.httpClient.post<AuthResponse>(`${this.AUTH_SERVER_ADDRESS}/register`, user).pipe(
+        return this.httpClient.post<AuthResponse>(this.AUTH_SERVER_ADDRESS + 'register', user)
+
+        /*  return this.httpClient.post<AuthResponse>(`${this.AUTH_SERVER_ADDRESS}/register`, user).pipe(
             tap(async (res: AuthResponse) => {
 
                 if (res.user) {
@@ -28,10 +30,10 @@ export class AuthService {
                     this.authSubject.next(true);
                 }
             })
-        );
+        );*/
     }
 
-    login(user: User): Observable<AuthResponse> {
+    /*login(user: User): Observable<AuthResponse> {
         return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login`, user).pipe(
             tap(async (res: AuthResponse) => {
 
@@ -52,5 +54,16 @@ export class AuthService {
 
     isLoggedIn() {
         return this.authSubject.asObservable();
+    }*/
+    isAuthenticated() {
+        return false;
+    }
+
+    logout() {
+        return null;
+    }
+
+    login() {
+        return null;
     }
 }
