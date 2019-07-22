@@ -45,6 +45,7 @@
                         <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
                             <div *ngIf="f.phoneNumber.errors.required">Phone Number is required</div>
                             <div *ngIf="f.phoneNumber.errors.pattern">Phone Number is not valid</div>
+                            <div *ngIf="f.phoneNumber.errors.alreadyExists">Phone Number already exists</div>
                         </div>
 
                         <ion-item>

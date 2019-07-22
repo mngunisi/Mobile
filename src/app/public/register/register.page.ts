@@ -43,7 +43,7 @@ export class RegisterPage implements OnInit {
     this.authService.register(this.registerForm.value).subscribe((res) => {
           this.user = res;
           if (this.user.errorMsg != null) {
-              alert(this.user.fieldName);
+              this.f.phoneNumber.setErrors({ alreadyExists: true });
               return;
           }
       this.router.navigateByUrl('home');

@@ -12,7 +12,7 @@ import {tap} from "rxjs/internal/operators";
 })
 
 export class AuthService {
-    AUTH_SERVER_ADDRESS:  string  =  'http://192.168.8.102:8080//';
+    AUTH_SERVER_ADDRESS:  string  =  'http://localhost:8080//';
     authSubject  =  new  BehaviorSubject(false);
 
   constructor(private storage: Storage, private  httpClient:  HttpClient, private platform: Platform) {
