@@ -16,7 +16,8 @@ export class RegisterPage implements OnInit {
     submitted = false;
     user: UserDTO;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder,
+              private  storage:  Storage) { }
 
   ngOnInit() {
       this.registerForm = this.formBuilder.group({
@@ -46,7 +47,9 @@ export class RegisterPage implements OnInit {
               this.f.phoneNumber.setErrors({ alreadyExists: true });
               return;
           }
-      this.router.navigateByUrl('home');
+
+          this.authService.setLoggedInProperties(res);
+        this.router.navigateByUrl('home');
     });
   }
 

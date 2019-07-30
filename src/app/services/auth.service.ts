@@ -5,65 +5,62 @@ import {Storage} from "@ionic/storage";
 import {BehaviorSubject, Observable} from "rxjs";
 import {UserDTO} from "../auth/auth-response";
 import {User} from "../auth/user";
-import {tap} from "rxjs/internal/operators";
+
+
+const TOKEN_KEY = 'SB_AUTH_TOKEN';
+const EXPIRES_IN = "SB_TOKEN_EXPIRY";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-
 export class AuthService {
-    AUTH_SERVER_ADDRESS:  string  =  'http://localhost:8080//';
-    authSubject  =  new  BehaviorSubject(false);
+    AUTH_SERVER_ADDRESS: string = 'http://localhost:8080//';
+    authState  =  new  BehaviorSubject(false);
+    loggedUser: UserDTO;
 
-  constructor(private storage: Storage, private  httpClient:  HttpClient, private platform: Platform) {
-  }
+    constructor(private storage: Storage, private  httpClient: HttpClient, private platform: Platform) {
+        this.platform.ready().then(() => {
+            this.checkToken();
+        });
+    }
 
     register(user: User): Observable<UserDTO> {
-      return this.httpClient.post<UserDTO>(this.AUTH_SERVER_ADDRESS + 'register', user);
-
-        /*  return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user).pipe(
-            tap(async (res: UserDTO) => {
-
-                if (res.user) {
-                    await this.storage.set("ACCESS_TOKEN", res.user.access_token);
-                    await this.storage.set("EXPIRES_IN", res.user.expires_in);
-                    this.authSubject.next(true);
-                }
-            })
-        );*/
+        return this.httpClient.post<UserDTO>(this.AUTH_SERVER_ADDRESS + 'register', user);
     }
 
-    /*login(user: User): Observable<UserDTO> {
-        return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login`, user).pipe(
-            tap(async (res: UserDTO) => {
+    login(user: User): Observable<UserDTO>  {
+        this.httpClient.post<UserDTO>(this.AUTH_SERVER_ADDRESS + 'login', user).subscribe((res) => {
+            if (res.loginStatus == "SUCCESS"){
+                this.setLoggedInProperties(res);
+                this.loggedUser = res;
+            }
+        });
 
-                if (res.user) {
-                    await this.storage.set("ACCESS_TOKEN", res.user.access_token);
-                    await this.storage.set("EXPIRES_IN", res.user.expires_in);
-                    this.authSubject.next(true);
-                }
-            })
-        );
+        return this.loggedUser;
     }
 
-    async logout() {
-        await this.storage.remove("ACCESS_TOKEN");
-        await this.storage.remove("EXPIRES_IN");
-        this.authSubject.next(false);
-    }
-
-    isLoggedIn() {
-        return this.authSubject.asObservable();
-    }*/
-    isAuthenticated() {
-        return false;
+    setLoggedInProperties(loggedInUser: UserDTO){
+        this.storage.set(TOKEN_KEY, loggedInUser.accessToken);
+        this.storage.set(EXPIRES_IN, loggedInUser.expiresIn);
+        this.authState.next(true);
     }
 
     logout() {
-        return null;
+        return this.storage.remove(TOKEN_KEY).then(() => {
+            this.authState.next(false);
+        });
     }
 
-    login() {
-        return null;
+    isAuthenticated() {
+        return this.authState.value;
     }
+
+    checkToken() {
+        this.storage.get(TOKEN_KEY).then(res => {
+            if (res) {
+                this.authState.next(true);
+            }
+        });
+    }
+
 }
