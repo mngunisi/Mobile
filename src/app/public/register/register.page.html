@@ -8,14 +8,14 @@
 </ion-header>
 
 <ion-content color="primary">
-    <form  [formGroup]="registerForm" (ngSubmit)="register()">
+    <form  #form="ngForm" (ngSubmit)="register()">
         <ion-grid>
             <ion-row color="primary" justify-content-center>
                 <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
                     <div text-center>
                         <h3>Create your account!</h3>
                     </div>
-                    <div padding>
+                    <div padding [formGroup]="registerForm">
                         <ion-item>
                             <ion-input  type="text" formControlName="name" class="form-control"
                                         [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
@@ -79,21 +79,3 @@
     </form>
 
 </ion-content>
-
-
-
-
-<!--
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Register</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding>
-
-</ion-content> -->
-

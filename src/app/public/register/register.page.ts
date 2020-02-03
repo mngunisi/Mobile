@@ -16,8 +16,7 @@ export class RegisterPage implements OnInit {
     submitted = false;
     user: UserDTO;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder,
-              private  storage:  Storage) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
       this.registerForm = this.formBuilder.group({
@@ -34,23 +33,22 @@ export class RegisterPage implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.registerForm.controls; }
 
-  register() {
-      this.submitted = true;
 
-      if (this.registerForm.invalid) {
-          return;
-      }
+    register() {
+        this.submitted = true;
 
-    this.authService.register(this.registerForm.value).subscribe((res) => {
-          this.user = res;
-          if (this.user.errorMsg != null) {
-              this.f.phoneNumber.setErrors({ alreadyExists: true });
-              return;
-          }
+        if (this.registerForm.invalid) {
+            return;
+        }
 
-          this.authService.setLoggedInProperties(res);
-        this.router.navigateByUrl('home');
-    });
-  }
+        this.authService.register(this.registerForm.value).subscribe((res) => {
+            this.user = res;
+            if (this.user.errorMsg != null) {
+                this.f.phoneNumber.setErrors({ alreadyExists: true });
+                return;
+            }
 
+            this.router.navigateByUrl('home');
+        });
+    }
 }

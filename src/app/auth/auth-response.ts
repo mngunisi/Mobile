@@ -6,5 +6,5 @@ export interface UserDTO {
     errorMsg: string,
     accessToken: string,
     loginStatus: string,
-    expiresIn: number
+    tokenExpiresIn: number
 }

@@ -24,18 +24,22 @@ export class LoginPage implements OnInit {
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
-            password: ['', Validators.required]})
+            userPassword: ['', Validators.required]});
     }
 
-    login() {
+    login(form) {
         this.submitted = true;
 
-        this.authService.login(this.loginForm.value).subscribe((res) => {
-            if (res.loginStatus != "SUCCESS"){
-                return;
+        this.authService.login(form.value).subscribe((res) => {
+
+            if (this.authService.isAuthenticated())
+            {
+                this.router.navigateByUrl('home');
             }
 
-            this.router.navigateByUrl('home');
         });
     }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.loginForm.controls; }
 }
