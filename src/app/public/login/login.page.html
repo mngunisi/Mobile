@@ -12,6 +12,7 @@
                     <div text-center>
                         <h3>Login</h3>
                     </div>
+                    <div *ngIf="submitted && isLoginError" class="error">{{error}}</div>
                     <div padding>
                         <ion-item>
                             <ion-input name="username" type="email" placeholder="Username" ngModel required></ion-input>

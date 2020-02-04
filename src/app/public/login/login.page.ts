@@ -13,6 +13,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class LoginPage implements OnInit {
     loginForm: FormGroup;
     submitted = false;
+    isLoginError = false;
+    error = " ";
 
     constructor(private authService: AuthService, private platform: Platform, private router: Router,
                 private formBuilder: FormBuilder) {
@@ -34,9 +36,15 @@ export class LoginPage implements OnInit {
 
             if (this.authService.isAuthenticated())
             {
+                this.isLoginError = false;
                 this.router.navigateByUrl('home');
             }
-
+            else if(res.errorMsg != null)
+            {
+                this.isLoginError = true;
+                this.error = res.errorMsg;
+                form.reset();
+            }
         });
     }
 
