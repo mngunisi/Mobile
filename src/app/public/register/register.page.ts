@@ -12,11 +12,13 @@ import {UserDTO} from "../../auth/auth-response";
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+    roleId = 0;
     registerForm: FormGroup;
     submitted = false;
     user: UserDTO;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
       this.registerForm = this.formBuilder.group({
@@ -24,7 +26,8 @@ export class RegisterPage implements OnInit {
           surname: ['', Validators.required],
           phoneNumber: ['', [Validators.required, Validators.pattern(/^0(6\d|7\d|8\d)\d{7}$/)]],
           userPassword: ['', [Validators.required, Validators.minLength(6)]],
-          confirmPassword: ['', Validators.required]
+          confirmPassword: ['', Validators.required],
+          roleId: ['', Validators.required]
       }, {
           validator: MustMatch('userPassword', 'confirmPassword')
       });
@@ -50,5 +53,13 @@ export class RegisterPage implements OnInit {
 
             this.router.navigateByUrl('home');
         });
+    }
+
+    getCompanyDetails()
+    {
+       // if (this.roleId == 2)
+       // {
+            this.router.navigateByUrl('company-details');
+       // }
     }
 }

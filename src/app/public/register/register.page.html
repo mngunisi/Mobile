@@ -17,12 +17,22 @@
                     </div>
                     <div padding [formGroup]="registerForm">
                         <ion-item>
+                            <ion-select formControlName="roleId" placeholder="Select Role"
+                                        [ngClass]="{ 'is-invalid': submitted && f.roleId.errors }">
+                                <ion-select-option value="1">Client</ion-select-option>
+                                <ion-select-option value="2">Service Provider</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <div *ngIf="submitted && f.roleId.errors" class="error">
+                            <div *ngIf="f.roleId.errors.required">Please select role</div>
+                        </div>
+                        <ion-item>
                             <ion-input  type="text" formControlName="name" class="form-control"
                                         [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
                                         placeholder="First Name">
                             </ion-input>
                         </ion-item>
-                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.name.errors" class="error">
                             <div *ngIf="f.name.errors.required">First Name is required</div>
                         </div>
 
@@ -32,7 +42,7 @@
                                         placeholder="Surname">
                             </ion-input>
                         </ion-item>
-                        <div *ngIf="submitted && f.surname.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.surname.errors" class="error">
                             <div *ngIf="f.surname.errors.required">Surname is required</div>
                         </div>
 
@@ -42,7 +52,7 @@
                                        placeholder="Phone Number e.g 0721568930">
                             </ion-input>
                         </ion-item>
-                        <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.phoneNumber.errors" class="error">
                             <div *ngIf="f.phoneNumber.errors.required">Phone Number is required</div>
                             <div *ngIf="f.phoneNumber.errors.pattern">Phone Number is not valid</div>
                             <div *ngIf="f.phoneNumber.errors.alreadyExists">Phone Number already exists</div>
@@ -54,7 +64,7 @@
                                        placeholder="Password">
                             </ion-input>
                         </ion-item>
-                        <div *ngIf="submitted && f.userPassword.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.userPassword.errors" class="error">
                             <div *ngIf="f.userPassword.errors.required">Password is required</div>
                             <div *ngIf="f.userPassword.errors.minlength">Password must be at least 6 characters</div>
                         </div>
@@ -65,13 +75,16 @@
                                        placeholder="Confirm Password">
                             </ion-input>
                         </ion-item>
-                        <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && f.confirmPassword.errors" class="error">
                             <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
                             <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
                         </div>
                     </div>
-                    <div padding>
+                    <div padding *ngIf="registerForm.get('roleId').value == 1 || registerForm.get('roleId').value == 0">
                         <ion-button  size="large" type="submit" expand="block">Register</ion-button>
+                    </div>
+                    <div padding *ngIf="registerForm.get('roleId').value == 2">
+                        <ion-button  size="large" type="submit" expand="block" (click)="getCompanyDetails()">Next</ion-button>
                     </div>
                 </ion-col>
             </ion-row>

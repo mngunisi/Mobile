@@ -6,6 +6,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {UserDTO} from "../auth/auth-response";
 import {User} from "../auth/user";
 import {tap} from "rxjs/internal/operators";
+import {Business} from "../auth/business";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,18 @@ export class AuthService {
 
     register(user: User): Observable<UserDTO> {
         return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user).pipe(
+            tap(async (res: UserDTO ) => {
+                if (res) {
+                    await this.storage.set('ACCESS_TOKEN', res.accessToken);
+                    await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
+                    this.authState.next(true);
+                }
+            })
+        );
+    }
+
+    registerCoAndUser(user: User, business: Business): Observable<UserDTO> {
+        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user, business).pipe(
             tap(async (res: UserDTO ) => {
                 if (res) {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
