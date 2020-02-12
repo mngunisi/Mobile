@@ -33,8 +33,9 @@ export class AuthService {
         );
     }
 
-    registerCoAndUser(user: User, business: Business): Observable<UserDTO> {
-        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user, business).pipe(
+    registerCoAndUser(business: Business, user: User): Observable<UserDTO> {
+        var ServiceProvider = {'business': business, 'user': user};
+        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/registerServProvider`, ServiceProvider).pipe(
             tap(async (res: UserDTO ) => {
                 if (res) {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);

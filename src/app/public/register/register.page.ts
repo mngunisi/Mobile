@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {AuthService} from "../../services/auth.service";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Router} from "@angular/router";
+import {Router, NavigationExtras} from "@angular/router";
 import {MustMatch} from "../../validators/must-match";
 import {UserDTO} from "../../auth/auth-response";
 
@@ -41,25 +41,32 @@ export class RegisterPage implements OnInit {
         this.submitted = true;
 
         if (this.registerForm.invalid) {
+            //todo: show user error message
             return;
         }
 
-        this.authService.register(this.registerForm.value).subscribe((res) => {
-            this.user = res;
-            if (this.user.errorMsg != null) {
-                this.f.phoneNumber.setErrors({ alreadyExists: true });
-                return;
-            }
+        if (this.registerForm.get('roleId').value != 2)
+        {
+            this.authService.register(this.registerForm.value).subscribe((res) => {
+                this.user = res;
+                if (this.user.errorMsg != null) {
+                    this.f.phoneNumber.setErrors({ alreadyExists: true });
+                    return;
+                }
 
-            this.router.navigateByUrl('home');
-        });
+                this.router.navigateByUrl('home');
+            });
+        }
     }
 
     getCompanyDetails()
     {
-       // if (this.roleId == 2)
-       // {
-            this.router.navigateByUrl('company-details');
-       // }
+        let navigationExtras: NavigationExtras = {
+            state: {
+                user: this.registerForm.value
+            }
+        };
+
+        this.router.navigateByUrl('company-details', navigationExtras);
     }
 }

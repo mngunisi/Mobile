@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
+import {User} from "../../../auth/user";
 
 @Component({
   selector: 'app-company-details',
@@ -11,8 +12,17 @@ import {AuthService} from "../../../services/auth.service";
 export class CompanyDetailsPage implements OnInit {
     businessDetForm: FormGroup;
     submitted = false;
+    user: User;
+    busId = 0;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private route: ActivatedRoute)
+  {
+      this.route.queryParams.subscribe(params => {
+          if (this.router.getCurrentNavigation().extras.state) {
+              this.user = this.router.getCurrentNavigation().extras.state.user;
+          }
+      });
+  }
 
   ngOnInit() {
       this.businessDetForm = this.formBuilder.group({
@@ -35,10 +45,11 @@ export class CompanyDetailsPage implements OnInit {
         this.submitted = true;
 
         if (this.businessDetForm.invalid) {
+            //todo: show user error message
             return;
         }
 
-        this.authService.registerCoAndUser(this.businessDetForm.value).subscribe((res) => {
+        this.authService.registerCoAndUser(this.businessDetForm.value, this.user).subscribe((res) => {
             this.router.navigateByUrl('home');
         });
     }
