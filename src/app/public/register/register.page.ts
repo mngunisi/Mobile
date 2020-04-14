@@ -16,6 +16,7 @@ export class RegisterPage implements OnInit {
     registerForm: FormGroup;
     submitted = false;
     user: UserDTO;
+    errors = null;
 
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
   }
@@ -41,7 +42,8 @@ export class RegisterPage implements OnInit {
         this.submitted = true;
 
         if (this.registerForm.invalid) {
-            //todo: show user error message
+            this.errors = "Error occurred, contact your administrator";
+            console.log(this.registerForm.errors);
             return;
         }
 

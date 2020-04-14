@@ -16,6 +16,9 @@
                         <h3>Create your account!</h3>
                     </div>
                     <div padding [formGroup]="registerForm">
+                        <div *ngIf="errors != null" class="error">
+                            {{errors}}
+                        </div>
                         <ion-item>
                             <ion-select formControlName="roleId" placeholder="Select Role"
                                         [ngClass]="{ 'is-invalid': submitted && f.roleId.errors }">

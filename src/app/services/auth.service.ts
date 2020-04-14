@@ -7,13 +7,16 @@ import {UserDTO} from "../auth/auth-response";
 import {User} from "../auth/user";
 import {tap} from "rxjs/internal/operators";
 import {Business} from "../auth/business";
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    AUTH_SERVER_ADDRESS: string = 'http://localhost:8080//';
+    AUTH_SERVER_ADDRESS: string = 'http://localhost:8080/api';
+
     authState  =  new  BehaviorSubject(false);
+    headers = new HttpHeaders({'AUTH_API_KEY': 'TESTING1212'});
 
     constructor(private storage: Storage, private  httpClient: HttpClient, private platform: Platform) {
         this.platform.ready().then(() => {
@@ -22,7 +25,7 @@ export class AuthService {
     }
 
     register(user: User): Observable<UserDTO> {
-        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user).pipe(
+        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/register`, user, {headers: this.headers }).pipe(
             tap(async (res: UserDTO ) => {
                 if (res) {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
@@ -35,7 +38,8 @@ export class AuthService {
 
     registerCoAndUser(business: Business, user: User): Observable<UserDTO> {
         var ServiceProvider = {'business': business, 'user': user};
-        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/registerServProvider`, ServiceProvider).pipe(
+        return this.httpClient.post<UserDTO>(`${this.AUTH_SERVER_ADDRESS}/registerServProvider`,
+            ServiceProvider, {headers: this.headers }).pipe(
             tap(async (res: UserDTO ) => {
                 if (res) {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
@@ -47,7 +51,7 @@ export class AuthService {
     }
 
     login(user: User): Observable<UserDTO> {
-        return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login`, user).pipe(
+        return this.httpClient.post(`${this.AUTH_SERVER_ADDRESS}/login`, user, {headers: this.headers }).pipe(
             tap(async (res: UserDTO) => {
                 if (res && res.errorMsg == null) {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
