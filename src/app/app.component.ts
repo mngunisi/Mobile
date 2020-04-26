@@ -40,4 +40,12 @@ export class AppComponent {
     logout() {
       this.authService.logout();
     }
+
+    navigateToDashboard(){
+        this.router.navigate(['members', 'dashboard']);
+    }
+
+    navigateToUserProfile(){
+        this.router.navigate(['members', 'my-profile']);
+    }
 }

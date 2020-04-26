@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import { MenuController } from '@ionic/angular';
+import {Component, OnInit} from "@angular/core";
+import {AuthService} from "../../services/auth.service";
+import {MenuController} from "@ionic/angular";
 
 @Component({
   selector: 'app-dashboard',
@@ -8,6 +8,9 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+    date: string;
+    type: 'string';
+
 
     constructor(private authService: AuthService, private menu: MenuController) { }
 
@@ -16,6 +19,10 @@ export class DashboardPage implements OnInit {
 
     logout() {
     this.authService.logout();
+    }
+
+    onChange($event) {
+        console.log($event);
     }
 
     openFirst() {

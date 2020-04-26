@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -20,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
       AppRoutingModule,
       IonicStorageModule.forRoot(),
       HttpClientModule,
-      ReactiveFormsModule],
+      ReactiveFormsModule,
+      NgCalendarModule],
   providers: [
     StatusBar,
     SplashScreen,

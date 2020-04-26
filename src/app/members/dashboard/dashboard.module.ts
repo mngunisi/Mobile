@@ -7,6 +7,10 @@ import { IonicModule } from '@ionic/angular';
 
 import { DashboardPage } from './dashboard.page';
 
+//import { NgCalendarModule  } from 'ionic2-calendar';
+// Calendar UI Module
+import { CalendarModule } from 'ion2-calendar';
+
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +23,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+      CalendarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [DashboardPage]
