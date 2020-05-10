@@ -17,6 +17,7 @@ export class AuthService {
 
     authState  =  new  BehaviorSubject(false);
     headers = new HttpHeaders({'AUTH_API_KEY': 'TESTING1212'});
+    userDto: UserDTO;
 
     constructor(private storage: Storage, private  httpClient: HttpClient, private platform: Platform) {
         this.platform.ready().then(() => {
@@ -31,6 +32,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
+                    this.userDto = res;
                 }
             })
         );
@@ -45,6 +47,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
+                    this.userDto = res;
                 }
             })
         );
@@ -57,6 +60,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
+                    this.userDto = res;
                 }
             })
         );
@@ -78,5 +82,9 @@ export class AuthService {
                 this.authState.next(true);
             }
         });
+    }
+
+    getLoggedInUser() {
+        return this.userDto;
     }
 }
