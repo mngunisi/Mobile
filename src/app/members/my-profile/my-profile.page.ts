@@ -16,11 +16,12 @@ export class MyProfilePage implements OnInit {
       this.userDto = authService.getLoggedInUser();
   }
 
+  //todo: when the userDto is null just log the user off so that they can login again
   ngOnInit() {
       this.userDetailForm = this.formBuilder.group({
           name: [this.userDto.name, Validators.required],
           surname: [this.userDto.surname, Validators.required],
-          phoneNumber: [this.userDto.phoneNumber, [Validators.required, Validators.pattern(/^0(6\d|7\d|8\d)\d{7}$/)]],
+          phoneNumber: [this.userDto.phoneNumber, [Validators.required, Validators.pattern(/^0(6\d|7\d|8\d)\d{7}$/)]]
       });
   }
 
