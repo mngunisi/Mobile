@@ -14,10 +14,8 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AuthService {
     AUTH_SERVER_ADDRESS: string = 'http://localhost:8080/api';
-
     authState  =  new  BehaviorSubject(false);
     headers = new HttpHeaders({'AUTH_API_KEY': 'TESTING1212'});
-    userDto: UserDTO;
 
     constructor(private storage: Storage, private  httpClient: HttpClient, private platform: Platform) {
         this.platform.ready().then(() => {
@@ -32,7 +30,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
-                    this.userDto = res;
+                    localStorage.setItem('currentUser', JSON.stringify(res));
                 }
             })
         );
@@ -47,7 +45,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
-                    this.userDto = res;
+                    localStorage.setItem('currentUser', JSON.stringify(res));
                 }
             })
         );
@@ -60,7 +58,7 @@ export class AuthService {
                     await this.storage.set('ACCESS_TOKEN', res.accessToken);
                     await this.storage.set('EXPIRES_IN', res.tokenExpiresIn);
                     this.authState.next(true);
-                    this.userDto = res;
+                    localStorage.setItem('currentUser', JSON.stringify(res));
                 }
             })
         );
@@ -69,6 +67,7 @@ export class AuthService {
     async logout() {
         await this.storage.remove('ACCESS_TOKEN');
         await this.storage.remove('EXPIRES_IN');
+        localStorage.removeItem('currentUser');
         this.authState.next(false);
     }
 
@@ -82,9 +81,5 @@ export class AuthService {
                 this.authState.next(true);
             }
         });
-    }
-
-    getLoggedInUser() {
-        return this.userDto;
     }
 }

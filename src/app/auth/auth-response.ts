@@ -8,4 +8,5 @@ export interface UserDTO {
     loginStatus: string,
     phoneNumber: string,
     tokenExpiresIn: number
+    userRole: number
 }

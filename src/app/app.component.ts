@@ -11,6 +11,8 @@ import {AuthService} from './services/auth.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+    user: any;
+
   constructor(
       private platform: Platform,
       private splashScreen: SplashScreen,
@@ -25,6 +27,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.user = JSON.parse(localStorage.getItem('currentUser'));
 
       this.authService.authState.subscribe(state => {
         if (state) {
@@ -47,5 +50,13 @@ export class AppComponent {
 
     navigateToUserProfile(){
         this.router.navigate(['members', 'my-profile']);
+    }
+
+    navigateToManageEmployees(){
+        this.router.navigate(['members', 'employee']);
+    }
+
+    navigateToManageServices(){
+        this.router.navigate(['members', 'services']);
     }
 }

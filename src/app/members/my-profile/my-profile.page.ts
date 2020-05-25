@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {UserDTO} from "../../auth/auth-response";
-import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-my-profile',
@@ -10,18 +8,17 @@ import {AuthService} from "../../services/auth.service";
 })
 export class MyProfilePage implements OnInit {
     userDetailForm: FormGroup;
-    userDto: UserDTO;
+    user: any;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
-      this.userDto = authService.getLoggedInUser();
+  constructor(private formBuilder: FormBuilder) {
+      this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  //todo: when the userDto is null just log the user off so that they can login again
   ngOnInit() {
       this.userDetailForm = this.formBuilder.group({
-          name: [this.userDto.name, Validators.required],
-          surname: [this.userDto.surname, Validators.required],
-          phoneNumber: [this.userDto.phoneNumber, [Validators.required, Validators.pattern(/^0(6\d|7\d|8\d)\d{7}$/)]]
+          name: [this.user.name, Validators.required],
+          surname: [this.user.surname, Validators.required],
+          phoneNumber: [this.user.phoneNumber, [Validators.required, Validators.pattern(/^0(6\d|7\d|8\d)\d{7}$/)]]
       });
   }
 

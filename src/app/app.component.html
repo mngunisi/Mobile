@@ -15,6 +15,14 @@
                     <ion-icon name="contact"></ion-icon>
                     <ion-label> My Profile</ion-label>
                 </ion-item>
+                <ion-item *ngIf="user.userRole == 2" button (click)="navigateToManageEmployees()" routerDirection="forward">
+                    <ion-icon name="contact"></ion-icon>
+                    <ion-label>Manage Employees</ion-label>
+                </ion-item>
+                <ion-item *ngIf="user.userRole == 2" button (click)="navigateToManageServices()" routerDirection="forward">
+                    <ion-icon name="contact"></ion-icon>
+                    <ion-label>Manage Services</ion-label>
+                </ion-item>
                 <ion-item button (click)="logout()">
                     <ion-icon name="log-out"></ion-icon>
                     <ion-label>sign out</ion-label>
